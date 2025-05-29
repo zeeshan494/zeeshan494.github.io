@@ -10,23 +10,30 @@
 </head>
 <body>
     <nav id="navbar">
-        <div class="container">
-            <h1 class="logo">MZ</h1>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+    <div class="container">
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#resume">Resume</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-controls">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
-    </nav>
+    </div>
+</nav>
+
+    <!-- Cyber Background Effects -->
+    <div class="cyber-background">
+        <div class="binary-rain" id="binary-rain"></div>
+        <div class="network-nodes" id="network-nodes"></div>
+        <div class="data-streams" id="data-streams"></div>
+    </div>
 
     <section id="home" class="hero">
         <div class="container">
@@ -38,6 +45,7 @@
                     <div class="hero-buttons">
                         <a href="#contact" class="btn btn-primary">Contact Me</a>
                         <a href="#experience" class="btn btn-secondary">View Experience</a>
+                        <a href="#resume" class="btn btn-accent">Download Resume</a>
                     </div>
                     <div class="security-stats">
                         <div class="stat-item">
@@ -75,25 +83,7 @@
                 <div class="hero-image">
                     <div class="profile-container">
                         <div class="profile-image">
-                            <img src="profile.jpg" alt="Muhammad Zeeshan - Lead Security Engineer" />
-                            <div class="security-overlay">
-                                <div class="scan-line"></div>
-                                <div class="security-grid"></div>
-                            </div>
-                        </div>
-                        <div class="floating-elements">
-                            <div class="floating-icon" style="--delay: 0s">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="floating-icon" style="--delay: 1s">
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <div class="floating-icon" style="--delay: 2s">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <div class="floating-icon" style="--delay: 3s">
-                                <i class="fas fa-bug"></i>
-                            </div>
+                            <img src="/images/profile.jpg" alt="Muhammad Zeeshan - Lead Security Engineer" />
                         </div>
                     </div>
                     <div class="soc-dashboard">
@@ -374,6 +364,48 @@
         </div>
     </section>
 
+    <section id="resume" class="resume">
+        <div class="container">
+            <h2 class="section-title">Resume</h2>
+            <div class="resume-container">
+                <div class="resume-preview">
+                    <div class="resume-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="resume-info">
+                        <h3>Muhammad Zeeshan - Resume</h3>
+                        <p>Lead Security Engineer | Cybersecurity Expert</p>
+                        <p class="file-size">PDF • Updated January 2025</p>
+                    </div>
+                </div>
+                <div class="resume-actions">
+                    <a href="/resume.pdf" download="Muhammad_Zeeshan_Resume.pdf" class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        Download Resume
+                    </a>
+                    <a href="/resume.pdf" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i>
+                        View Online
+                    </a>
+                </div>
+                <div class="resume-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>4+ Years Experience</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>Multiple Certifications</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SOC Leadership</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="extracurricular" class="extracurricular">
         <div class="container">
             <h2 class="section-title">Extracurricular Experience</h2>
@@ -386,15 +418,15 @@
                         <h3>Leadership Roles at Namal University</h3>
                         <div class="role-item">
                             <h4>President - Cyber Security Awareness Society</h4>
-                            <p>Leading cybersecurity awareness initiatives</p>
+                            <p>Served 6 months leading cybersecurity awareness initiatives</p>
                         </div>
                         <div class="role-item">
                             <h4>Head Education Wing - Namal Environmental Society</h4>
-                            <p>Organizing educational programs and workshops</p>
+                            <p>Served 6 months organizing educational programs and workshops</p>
                         </div>
                         <div class="role-item">
                             <h4>Co-Head Education Wing - Namal Society of Social Impact</h4>
-                            <p>Coordinating social impact educational initiatives</p>
+                            <p>Served 6 months coordinating social impact educational initiatives</p>
                         </div>
                     </div>
                 </div>
@@ -405,7 +437,7 @@
                     <div class="extracurricular-content">
                         <h3>Youth Leadership Camp</h3>
                         <p class="institution">Islamabad</p>
-                        <p>Youth Leadership Camp, participating in workshops on leadership, team building, and personal development.</p>
+                        <p>Spent 10 days at a Youth Leadership Camp, participating in workshops on leadership, team building, and personal development.</p>
                     </div>
                 </div>
             </div>
@@ -513,11 +545,12 @@
                             <textarea id="message" name="message" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" id="submit-btn">
-                            <span class="btn-text">Send Message</span>
+                            <span class="btn-text">SEND MESSAGE</span>
                             <span class="btn-loading" style="display: none;">
                                 <i class="fas fa-spinner fa-spin"></i> Sending...
                             </span>
                         </button>
+                        <input type="hidden" name="to_email" value="muhammadzeeshan494@gmail.com">
                     </form>
                     <div id="form-status" class="form-status"></div>
                 </div>
@@ -537,7 +570,7 @@
             </div>
         </div>
     </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
