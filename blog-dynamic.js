@@ -4,8 +4,13 @@ class DynamicBlog {
     this.posts = []
     this.categories = {}
     this.currentPage = 1
-    this.postsPerPage = 5
+    this.postsPerPage = 6 // Show more posts in card view
     this.currentFilter = "all"
+    this.viewMode = "cards" // "cards" or "full"
+    this.selectedPost = null
+
+    // Debug flag to help troubleshoot
+    this.debug = true
 
     this.init()
   }
@@ -17,18 +22,43 @@ class DynamicBlog {
   }
 
   loadBlogData() {
-    // Load from admin-generated data or fallback to localStorage
-    if (window.blogData && window.blogData.posts) {
-      this.posts = window.blogData.posts
-      this.categories = window.blogData.categories
-    } else {
-      // Fallback to localStorage for local development
+    try {
+      // First try to load from localStorage (which has the full content)
       const localData = JSON.parse(localStorage.getItem("blogData") || '{"posts": [], "categories": {}}')
-      this.posts = localData.posts || []
-      this.categories = localData.categories || {}
-    }
 
-    this.renderBlog()
+      // Then try window.blogData (from blog-data.js) as fallback
+      if (window.blogData && window.blogData.posts && window.blogData.posts.length > 0) {
+        // If both exist, merge them with preference to localStorage for content
+        if (localData.posts && localData.posts.length > 0) {
+          // Use localStorage data but merge any missing posts from window.blogData
+          const localPostIds = localData.posts.map((p) => p.id)
+          const missingPosts = window.blogData.posts.filter((p) => !localPostIds.includes(p.id))
+          this.posts = [...localData.posts, ...missingPosts]
+          this.categories = { ...window.blogData.categories, ...localData.categories }
+        } else {
+          // Use window.blogData if localStorage is empty
+          this.posts = window.blogData.posts
+          this.categories = window.blogData.categories
+        }
+      } else {
+        // Fallback to localStorage only
+        this.posts = localData.posts || []
+        this.categories = localData.categories || {}
+      }
+
+      if (this.debug) {
+        console.log("Loaded blog posts:", this.posts)
+        if (this.posts.length > 0) {
+          console.log("First post content length:", this.posts[0].content.length)
+          console.log("First post has image:", !!this.posts[0].image)
+        }
+      }
+
+      this.renderBlog()
+    } catch (error) {
+      console.error("Error loading blog data:", error)
+      this.showNotification("Error loading blog data. Please try refreshing the page.", "error")
+    }
   }
 
   renderBlog() {
@@ -37,6 +67,11 @@ class DynamicBlog {
     this.renderTags()
     this.renderPosts()
     this.renderPagination()
+
+    // Handle images after rendering
+    setTimeout(() => {
+      this.handleImageErrors()
+    }, 100)
   }
 
   renderCategories() {
@@ -73,7 +108,7 @@ class DynamicBlog {
     const recentHTML = recent
       .map(
         (post) => `
-      <li><a href="#post-${post.id}">${post.title}</a></li>
+      <li><a href="#" data-post-id="${post.id}" class="recent-post-link">${post.title}</a></li>
     `,
       )
       .join("")
@@ -107,11 +142,21 @@ class DynamicBlog {
     const endIndex = startIndex + this.postsPerPage
     const postsToShow = filteredPosts.slice(startIndex, endIndex)
 
-    const postsHTML = postsToShow.map((post) => this.createPostHTML(post)).join("")
-    blogPosts.innerHTML = postsHTML
+    if (this.viewMode === "full" && this.selectedPost) {
+      // Show single full post
+      blogPosts.innerHTML = this.createFullPostHTML(this.selectedPost)
+    } else {
+      // Show cards
+      const postsHTML = postsToShow
+        .map((post) => {
+          return this.createPostCardHTML({ ...post })
+        })
+        .join("")
+      blogPosts.innerHTML = postsHTML
+    }
   }
 
-  createPostHTML(post) {
+  createPostCardHTML(post) {
     const categoryNames = {
       soc: "SOC Operations",
       "threat-hunting": "Threat Hunting",
@@ -130,14 +175,85 @@ class DynamicBlog {
     })
 
     return `
-      <article class="blog-post" data-category="${post.category}" id="post-${post.id}">
+      <article class="blog-post-card" data-category="${post.category}" data-post-id="${post.id}">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="card-date"><i class="fas fa-calendar"></i> ${formattedDate}</span>
+            <span class="card-category ${post.category}">${categoryName}</span>
+            <span class="card-read-time"><i class="fas fa-clock"></i> ${readTime} min read</span>
+          </div>
+          <h2 class="card-title">${post.title}</h2>
+        </div>
+        
+        ${post.image ? `<div class="post-image"><img src="${post.image}" alt="${post.title}" onerror="this.src='/placeholder.svg?height=300&width=500';"></div>` : ""}
+        
+        <div class="card-content">
+          <p class="card-excerpt">${post.excerpt}</p>
+          
+          <div class="card-tags">
+            ${post.tags.map((tag) => `<span class="card-tag">${tag}</span>`).join("")}
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <div class="card-author">
+            <img src="profile.jpg" alt="Muhammad Zeeshan" class="card-author-avatar">
+            <div class="card-author-info">
+              <span class="card-author-name">Muhammad Zeeshan</span>
+              <span class="card-author-title">Lead Security Engineer</span>
+            </div>
+          </div>
+          
+          <div class="card-stats">
+            <span class="card-stat">
+              <i class="fas fa-heart"></i>
+              ${post.likes || 0}
+            </span>
+            <span class="card-stat">
+              <i class="fas fa-comments"></i>
+              ${post.comments?.length || 0}
+            </span>
+            <span class="card-stat">
+              <i class="fas fa-eye"></i>
+              ${post.views || 0}
+            </span>
+          </div>
+        </div>
+      </article>
+    `
+  }
+
+  createFullPostHTML(post) {
+    const categoryNames = {
+      soc: "SOC Operations",
+      "threat-hunting": "Threat Hunting",
+      "cloud-security": "Cloud Security",
+      "ai-security": "AI Security",
+      "incident-response": "Incident Response",
+      "malware-analysis": "Malware Analysis",
+    }
+
+    const categoryName = categoryNames[post.category] || post.category
+    const readTime = this.calculateReadTime(post.content)
+    const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+
+    return `
+      <button class="back-to-blog" onclick="dynamicBlog.showCardView()">
+        <i class="fas fa-arrow-left"></i> Back to Blog
+      </button>
+      
+      <article class="blog-post-full" data-category="${post.category}" id="post-${post.id}">
         <div class="post-header">
           <div class="post-meta">
             <span class="post-date"><i class="fas fa-calendar"></i> ${formattedDate}</span>
             <span class="post-category ${post.category}">${categoryName}</span>
             <span class="read-time"><i class="fas fa-clock"></i> ${readTime} min read</span>
           </div>
-          <h2 class="post-title">${post.title}</h2>
+          <h1 class="post-title">${post.title}</h1>
           <div class="post-author">
             <img src="profile.jpg" alt="Muhammad Zeeshan" class="author-avatar">
             <div class="author-info">
@@ -147,13 +263,13 @@ class DynamicBlog {
           </div>
         </div>
         
-        ${post.image ? `<div class="post-image"><img src="${post.image}" alt="${post.title}"></div>` : ""}
+        ${post.image ? `<div class="post-image"><img src="${post.image}" alt="${post.title}" onerror="this.src='/placeholder.svg?height=400&width=600';"></div>` : ""}
         
         <div class="post-content">
           <p class="post-excerpt">${post.excerpt}</p>
           
           <div class="post-body">
-            ${post.content}
+            ${post.content || "No content available."}
           </div>
           
           <div class="post-tags">
@@ -247,6 +363,14 @@ class DynamicBlog {
 
   renderPagination() {
     const pagination = document.getElementById("pagination")
+
+    if (this.viewMode === "full") {
+      pagination.style.display = "none"
+      return
+    }
+
+    pagination.style.display = "flex"
+
     const filteredPosts = this.getFilteredPosts()
     const totalPages = Math.ceil(filteredPosts.length / this.postsPerPage)
 
@@ -259,7 +383,53 @@ class DynamicBlog {
     pageInfo.textContent = `Page ${this.currentPage} of ${totalPages || 1}`
   }
 
+  showCardView() {
+    this.viewMode = "cards"
+    this.selectedPost = null
+    this.renderPosts()
+    this.renderPagination()
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  showFullPost(postId) {
+    const post = this.posts.find((p) => p.id === postId)
+    if (!post) return
+
+    this.selectedPost = post
+    this.viewMode = "full"
+
+    // Increment view count
+    post.views = (post.views || 0) + 1
+    this.updatePostData()
+
+    this.renderPosts()
+    this.renderPagination()
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   bindEvents() {
+    // Card click to open full post
+    document.addEventListener("click", (e) => {
+      const card = e.target.closest(".blog-post-card")
+      if (card) {
+        const postId = card.dataset.postId
+        this.showFullPost(postId)
+      }
+    })
+
+    // Recent post links
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("recent-post-link")) {
+        e.preventDefault()
+        const postId = e.target.dataset.postId
+        this.showFullPost(postId)
+      }
+    })
+
     // Category filtering
     document.addEventListener("click", (e) => {
       if (e.target.classList.contains("category-filter")) {
@@ -271,8 +441,7 @@ class DynamicBlog {
 
         this.currentFilter = e.target.dataset.category
         this.currentPage = 1
-        this.renderPosts()
-        this.renderPagination()
+        this.showCardView() // Always show cards when filtering
       }
     })
 
@@ -324,6 +493,7 @@ class DynamicBlog {
         this.currentPage--
         this.renderPosts()
         this.renderPagination()
+        window.scrollTo({ top: 0, behavior: "smooth" })
       }
     })
 
@@ -334,24 +504,31 @@ class DynamicBlog {
         this.currentPage++
         this.renderPosts()
         this.renderPagination()
+        window.scrollTo({ top: 0, behavior: "smooth" })
       }
     })
   }
 
   filterByTag(tag) {
-    const postsWithTag = this.posts.filter((post) => post.tags.includes(tag))
-    // Highlight posts with the tag
-    document.querySelectorAll(".blog-post").forEach((post) => {
-      post.style.display = "none"
-    })
+    // Reset to show all posts with the tag
+    this.currentFilter = "all"
+    this.currentPage = 1
 
-    postsWithTag.forEach((post) => {
-      const postElement = document.getElementById(`post-${post.id}`)
-      if (postElement) {
-        postElement.style.display = "block"
-        postElement.scrollIntoView({ behavior: "smooth", block: "start" })
-      }
-    })
+    // Update category filter UI
+    document.querySelectorAll(".category-filter").forEach((f) => f.classList.remove("active"))
+    document.querySelector('[data-category="all"]').classList.add("active")
+
+    // Filter posts by tag
+    const postsWithTag = this.posts.filter((post) => post.tags.includes(tag))
+
+    // Temporarily override the filtered posts
+    this.tempFilteredPosts = postsWithTag
+    this.showCardView()
+
+    // Clear temp filter after a short delay
+    setTimeout(() => {
+      this.tempFilteredPosts = null
+    }, 100)
   }
 
   toggleLike(postId, btn) {
@@ -426,7 +603,9 @@ class DynamicBlog {
 
       // Update comment count
       const commentCount = document.querySelector(`[data-post="${postId}"] .comment-count`)
-      commentCount.textContent = post.comments.length
+      if (commentCount) {
+        commentCount.textContent = post.comments.length
+      }
 
       // Clear form
       commentForm.querySelector(".comment-name").value = ""
@@ -555,9 +734,64 @@ class DynamicBlog {
       notification.remove()
     }, 3000)
   }
+
+  // Helper method to handle image loading errors
+  handleImageErrors() {
+    document.querySelectorAll(".post-image img, .card-image img").forEach((img) => {
+      img.onerror = function () {
+        this.src = "/placeholder.svg?height=300&width=500"
+        this.alt = "Image could not be loaded"
+      }
+
+      // For base64 images that might be too large
+      if (img.src.startsWith("data:") && img.src.length > 1000000) {
+        // Create a more efficient version of the image
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        const tempImg = new Image()
+        tempImg.crossOrigin = "anonymous"
+
+        tempImg.onload = () => {
+          // Resize large images to reduce memory usage
+          const maxWidth = 500
+          const maxHeight = 300
+          let width = tempImg.width
+          let height = tempImg.height
+
+          if (width > maxWidth) {
+            height = height * (maxWidth / width)
+            width = maxWidth
+          }
+
+          if (height > maxHeight) {
+            width = width * (maxHeight / height)
+            height = maxHeight
+          }
+
+          canvas.width = width
+          canvas.height = height
+          ctx.drawImage(tempImg, 0, 0, width, height)
+
+          try {
+            img.src = canvas.toDataURL("image/jpeg", 0.8)
+          } catch (e) {
+            console.error("Error converting image:", e)
+            img.src = "/placeholder.svg?height=300&width=500"
+          }
+        }
+
+        tempImg.onerror = () => {
+          img.src = "/placeholder.svg?height=300&width=500"
+        }
+
+        tempImg.src = img.src
+      }
+    })
+  }
 }
 
 // Initialize the dynamic blog system
+let dynamicBlog
 document.addEventListener("DOMContentLoaded", () => {
-  new DynamicBlog()
+  dynamicBlog = new DynamicBlog()
 })
