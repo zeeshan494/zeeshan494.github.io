@@ -2,5 +2,5 @@
 window.blogData = {
   "posts": [],
   "categories": {},
-  "lastUpdated": "2025-06-12T21:59:04.760Z"
+  "lastUpdated": "2025-06-13T19:15:29.419Z"
 };
