@@ -2199,9 +2199,10 @@ img {
   transform: translateY(-1px);
 }
 
-/* Blog Content */
-.blog-content {
-  flex: 1;
+.blog-content
+ {
+    flex: 1;
+    width: 76%;
 }
 
 .blog-posts {
