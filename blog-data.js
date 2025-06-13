@@ -1,28 +1,79 @@
-// Auto-generated blog data
+// Auto-generated blog data - This file will be updated by the admin system
 window.blogData = {
-  "posts": [
+  posts: [
     {
-      "id": "post_1749843009120_vxfksumhk",
-      "title": "Controlling app access on a specific SharePoint site collections",
-      "category": "soc",
-      "excerpt": "Imagine facing a significant challenge when your automation processes suddenly fail due to expired SharePoint secrets, interrupting access to a key SharePoint site and bringing operations to a halt. After reaching out to the IT team, they promptly replaced the outdated app in Azure Apps with a new one, generating fresh credentials",
-      "tags": [
-        "Microsoft",
-        "Sharepoint",
-        "Site"
-      ],
-      "content": "<p>Imagine facing a significant challenge when your automation processes suddenly fail due to expired SharePoint secrets, interrupting access to a key SharePoint site and bringing operations to a halt. After reaching out to the IT team, they promptly replaced the outdated app in Azure Apps with a new one, generating fresh credentials<em>&nbsp;tenant ID, secrets, and Application (Client) ID</em>. These credentials are vital for our automation workflows, enabling access to the SharePoint platform, including specific sites.</p><p>However, a new challenge arose when the IT team assigned the “<strong>Sites.Selected</strong>” permission under Microsoft Graph Sites. By default, this permission does not grant access to any SharePoint site collections unless explicitly configured. With only the “Sites.Selected” permission assigned, the application was denied access to the necessary SharePoint sites.</p><p>To ensure access to specific sites within SharePoint, explicit permissions need to be defined for each site. Both the IT team and your team need to collaborate and follow specific steps when setting up permissions for newly created applications.</p><p>In this post, I’ll outline these collaborative steps to help ensure full access to SharePoint sites moving forward.</p><p><strong>Steps:</strong></p><p><strong>1. Azure App Setup (Initial Configuration)</strong></p><ul><li><strong>Azure App Creation:</strong>&nbsp;The IT team creates the app in Azure AD and shares App name, App(Client ID), Tenant ID and Secrets with you.</li><li><strong>Permission Assignment:</strong>&nbsp;The app is assigned the “<strong>Sites.Selected</strong>” permission. This does not automatically grant access to any SharePoint site but enables specific access to be configured later via the Microsoft Graph API.</li></ul><p><br></p><p><img src=\"data:image/png;base64,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...",
-      "status": "published",
-      "image": "",
-      "date": "2025-06-13T19:30:09.120Z",
-      "lastModified": "2025-06-13T19:30:09.120Z",
-      "views": 0,
-      "likes": 0,
-      "comments": []
-    }
+      id: "post_1642089600000_abc123",
+      title: "Controlling app access on a specific SharePoint site collections",
+      category: "cloud-security",
+      excerpt:
+        "Learn how to properly configure SharePoint app permissions when dealing with expired secrets and the Sites.Selected permission to ensure full access to specific SharePoint sites.",
+      tags: ["Microsoft", "SharePoint", "Site", "Azure", "Permissions"],
+      content: `
+        <p>Imagine facing a significant challenge when your automation processes suddenly fail due to expired SharePoint secrets, interrupting access to a key SharePoint site and bringing operations to a halt. After reaching out to the IT team, they promptly replaced the outdated app in Azure Apps with a new one, generating fresh credentials — <strong>tenant ID, secrets, and Application (Client) ID</strong>. These credentials are vital for our automation workflows, enabling access to the SharePoint platform, including specific sites.</p>
+        
+        <p>However, a new challenge arose when the IT team assigned the <strong>"Sites.Selected"</strong> permission under Microsoft Graph Sites. By default, this permission does not grant access to any SharePoint site collections unless explicitly configured. With only the "Sites.Selected" permission assigned, the application was denied access to the necessary SharePoint sites.</p>
+        
+        <p>To ensure access to specific sites within SharePoint, explicit permissions need to be defined for each site. Both the IT team and your team need to collaborate and follow specific steps when setting up permissions for newly created applications.</p>
+        
+        <p>In this post, I'll outline these collaborative steps to help ensure full access to SharePoint sites moving forward.</p>
+        
+        <h3>Steps:</h3>
+        
+        <h4>1. Azure App Setup (Initial Configuration)</h4>
+        
+        <ul>
+          <li><strong>Azure App Creation:</strong> The IT team creates the app in Azure AD and shares App name, App(Client ID), Tenant ID and Secrets with you.</li>
+          <li><strong>Permission Assignment:</strong> The app is assigned the <strong>"Sites.Selected"</strong> permission. This does not automatically grant access to any SharePoint site but enables specific access to be configured later via the Microsoft Graph API.</li>
+        </ul>
+        
+        <h4>2. Site-Specific Permission Configuration</h4>
+        
+        <p>Once the Azure app is created with the Sites.Selected permission, you need to explicitly grant the app access to specific SharePoint sites. This is done using the Microsoft Graph API.</p>
+        
+        <h4>3. Grant Site Permissions via Graph API</h4>
+        
+        <p>To grant the application access to a specific SharePoint site, you'll use the Microsoft Graph API to assign site-level permissions. Here's how:</p>
+        
+        <ul>
+          <li><strong>Identify the Site ID:</strong> First, you need to get the Site ID of the SharePoint site you want to grant access to.</li>
+          <li><strong>Use Graph API:</strong> Make a POST request to the Microsoft Graph API to grant permissions.</li>
+          <li><strong>Verify Access:</strong> Test the application's access to ensure it can read/write to the specified site.</li>
+        </ul>
+        
+        <h4>4. Testing and Validation</h4>
+        
+        <p>After configuring the permissions:</p>
+        
+        <ul>
+          <li>Test the application's ability to access the SharePoint site</li>
+          <li>Verify that all required operations (read, write, delete) work as expected</li>
+          <li>Document the configuration for future reference</li>
+        </ul>
+        
+        <h4>5. Ongoing Maintenance</h4>
+        
+        <p>Remember to:</p>
+        
+        <ul>
+          <li>Monitor secret expiration dates</li>
+          <li>Set up alerts for upcoming expirations</li>
+          <li>Maintain documentation of all configured sites</li>
+          <li>Regular access testing to ensure continued functionality</li>
+        </ul>
+        
+        <p>By following these collaborative steps, you can ensure that your applications maintain proper access to SharePoint sites while adhering to security best practices and the principle of least privilege.</p>
+      `,
+      status: "published",
+      image: "",
+      date: "2025-01-15T10:00:00.000Z",
+      lastModified: "2025-01-15T10:00:00.000Z",
+      views: 245,
+      likes: 0,
+      comments: [],
+    },
   ],
-  "categories": {
-    "soc": 1
+  categories: {
+    "cloud-security": 1,
   },
-  "lastUpdated": "2025-06-13T19:30:10.185Z"
-};
+  lastUpdated: "2025-01-15T10:00:00.000Z",
+}
