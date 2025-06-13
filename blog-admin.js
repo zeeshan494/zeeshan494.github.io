@@ -20,7 +20,7 @@ class BlogAdmin {
     if (this.isAuthenticated) {
       this.showAdminContent()
       this.loadPosts()
-      this.showMainDashboard() // Add this line
+      this.showMainDashboard()
     }
   }
 
@@ -237,6 +237,14 @@ class BlogAdmin {
   }
 
   savePostData(postId, title, category, excerpt, tags, content, status, imageUrl) {
+    // Process image if it's a base64 string and too large
+    let processedImageUrl = imageUrl
+
+    if (imageUrl && imageUrl.startsWith("data:") && imageUrl.length > 500000) {
+      // Compress the image
+      processedImageUrl = this.compressImage(imageUrl)
+    }
+
     const post = {
       id: postId || this.generateId(),
       title,
@@ -245,7 +253,7 @@ class BlogAdmin {
       tags,
       content,
       status,
-      image: imageUrl,
+      image: processedImageUrl,
       date: postId ? this.currentPost.date : new Date().toISOString(),
       lastModified: new Date().toISOString(),
       views: postId ? this.currentPost.views : 0,
@@ -268,6 +276,48 @@ class BlogAdmin {
     this.loadAnalytics()
   }
 
+  // Add a new method to compress images
+  compressImage(base64Image) {
+    try {
+      // Create a temporary image element
+      const img = document.createElement("img")
+      img.src = base64Image
+
+      // Create a canvas to draw the resized image
+      const canvas = document.createElement("canvas")
+      const ctx = canvas.getContext("2d")
+
+      // Set maximum dimensions
+      const maxWidth = 800
+      const maxHeight = 600
+
+      // Calculate new dimensions while maintaining aspect ratio
+      let width = img.width
+      let height = img.height
+
+      if (width > maxWidth) {
+        height = height * (maxWidth / width)
+        width = maxWidth
+      }
+
+      if (height > maxHeight) {
+        width = width * (maxHeight / height)
+        height = maxHeight
+      }
+
+      // Set canvas dimensions and draw the resized image
+      canvas.width = width
+      canvas.height = height
+      ctx.drawImage(img, 0, 0, width, height)
+
+      // Convert canvas to compressed base64 image
+      return canvas.toDataURL("image/jpeg", 0.7)
+    } catch (error) {
+      console.error("Error compressing image:", error)
+      return base64Image // Return original if compression fails
+    }
+  }
+
   generateId() {
     return "post_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9)
   }
@@ -278,13 +328,14 @@ class BlogAdmin {
   }
 
   generateBlogData() {
-    // Generate blog data for the main blog page
+    // Generate FULL blog data for local viewing (no content truncation)
     const blogData = {
       posts: this.posts.filter((post) => post.status === "published"),
       categories: this.getCategoryCounts(),
       lastUpdated: new Date().toISOString(),
     }
 
+    // Save full data locally for the blog page
     localStorage.setItem("blogData", JSON.stringify(blogData))
   }
 
@@ -439,85 +490,108 @@ class BlogAdmin {
     try {
       this.showNotification("Syncing to GitHub...", "info")
 
-      // Generate blog data file
-      const blogData = {
-        posts: this.posts.filter((post) => post.status === "published"),
-        categories: this.getCategoryCounts(),
-        lastUpdated: new Date().toISOString(),
-      }
+      // Get the FULL blog data for GitHub (no truncation for local storage)
+      const fullBlogData = JSON.parse(localStorage.getItem("blogData") || '{"posts": [], "categories": {}}')
 
-      // Clean up the content to reduce size
-      const cleanedBlogData = {
-        ...blogData,
-        posts: blogData.posts.map((post) => ({
+      // Create a simplified version for GitHub sync only if needed
+      const githubBlogData = {
+        ...fullBlogData,
+        posts: fullBlogData.posts.map((post) => ({
           ...post,
-          // Remove or minimize large content for GitHub sync
-          content: this.cleanContentForSync(post.content),
-          // Remove base64 images to reduce size
-          image: post.image && post.image.startsWith("data:") ? "" : post.image,
+          // Only truncate content for GitHub if it's extremely large
+          content: post.content.length > 10000 ? this.cleanContentForSync(post.content) : post.content,
+          // Convert base64 images to placeholder for GitHub
+          image: post.image && post.image.startsWith("data:") ? "/placeholder.svg?height=400&width=600" : post.image,
         })),
       }
 
       // Create the content for blog-data.js
       const blogDataContent = `// Auto-generated blog data
-window.blogData = ${JSON.stringify(cleanedBlogData, null, 2)};`
+window.blogData = ${JSON.stringify(githubBlogData, null, 2)};`
 
       // Check content size before encoding
       const contentSize = new Blob([blogDataContent]).size
       console.log(`Content size: ${contentSize} bytes`)
 
       if (contentSize > 1000000) {
-        // 1MB limit
-        this.showNotification("Content too large for GitHub sync. Consider reducing post content.", "error")
-        return
+        // 1MB limit - create a more aggressive truncation
+        const truncatedData = {
+          ...githubBlogData,
+          posts: githubBlogData.posts.map((post) => ({
+            ...post,
+            content: this.cleanContentForSync(post.content),
+            excerpt: post.excerpt.substring(0, 200),
+          })),
+        }
+
+        const truncatedContent = `// Auto-generated blog data (truncated for GitHub)
+window.blogData = ${JSON.stringify(truncatedData, null, 2)};`
+
+        this.showNotification("Content was truncated for GitHub sync. Full content available locally.", "info")
+        return this.uploadToGitHub(truncatedContent)
       }
 
-      // Get current file SHA
-      const currentSha = await this.getFileSha("blog-data.js")
-
-      // GitHub API call to update the file
-      const response = await fetch(`https://api.github.com/repos/${this.config.repo}/contents/blog-data.js`, {
-        method: "PUT",
-        headers: {
-          Authorization: `token ${this.config.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: `Update blog data - ${new Date().toISOString()}`,
-          content: btoa(unescape(encodeURIComponent(blogDataContent))), // Better encoding for special characters
-          branch: this.config.branch,
-          ...(currentSha && { sha: currentSha }),
-        }),
-      })
-
-      const responseData = await response.json()
-
-      if (response.ok) {
-        this.showNotification("Successfully synced to GitHub!", "success")
-        console.log("GitHub sync successful:", responseData)
-      } else {
-        console.error("GitHub API Error:", responseData)
-        throw new Error(`GitHub API Error: ${responseData.message || "Unknown error"}`)
-      }
+      return this.uploadToGitHub(blogDataContent)
     } catch (error) {
       console.error("GitHub sync error:", error)
       this.showNotification(`Failed to sync to GitHub: ${error.message}`, "error")
     }
   }
 
-  // Add this new method to clean content for sync
+  async uploadToGitHub(content) {
+    // Get current file SHA
+    const currentSha = await this.getFileSha("blog-data.js")
+
+    // GitHub API call to update the file
+    const response = await fetch(`https://api.github.com/repos/${this.config.repo}/contents/blog-data.js`, {
+      method: "PUT",
+      headers: {
+        Authorization: `token ${this.config.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: `Update blog data - ${new Date().toISOString()}`,
+        content: btoa(unescape(encodeURIComponent(content))), // Better encoding for special characters
+        branch: this.config.branch,
+        ...(currentSha && { sha: currentSha }),
+      }),
+    })
+
+    const responseData = await response.json()
+
+    if (response.ok) {
+      this.showNotification("Successfully synced to GitHub!", "success")
+      console.log("GitHub sync successful:", responseData)
+    } else {
+      console.error("GitHub API Error:", responseData)
+      throw new Error(`GitHub API Error: ${responseData.message || "Unknown error"}`)
+    }
+  }
+
+  // Updated content cleaning method - less aggressive
   cleanContentForSync(content) {
     if (!content) return ""
 
-    // Remove excessive whitespace and clean up HTML
+    // Remove excessive whitespace but preserve formatting
     let cleaned = content
-      .replace(/\s+/g, " ") // Replace multiple spaces with single space
-      .replace(/>\s+</g, "><") // Remove spaces between HTML tags
+      .replace(/\s{3,}/g, " ") // Replace 3+ spaces with single space
+      .replace(/\n\s*\n\s*\n/g, "\n\n") // Remove excessive line breaks
       .trim()
 
-    // If content is still too long, truncate it
-    if (cleaned.length > 5000) {
-      cleaned = cleaned.substring(0, 5000) + "..."
+    // Only truncate if absolutely necessary and add proper ending
+    if (cleaned.length > 8000) {
+      // Find a good breaking point (end of paragraph or sentence)
+      let truncateAt = 7500
+      const lastParagraph = cleaned.lastIndexOf("</p>", truncateAt)
+      const lastSentence = cleaned.lastIndexOf(".", truncateAt)
+
+      if (lastParagraph > 6000) {
+        truncateAt = lastParagraph + 4
+      } else if (lastSentence > 6000) {
+        truncateAt = lastSentence + 1
+      }
+
+      cleaned = cleaned.substring(0, truncateAt) + "...</p><p><em>Read the full article on the website.</em></p>"
     }
 
     return cleaned
