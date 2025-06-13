@@ -446,9 +446,34 @@ class BlogAdmin {
         lastUpdated: new Date().toISOString(),
       }
 
+      // Clean up the content to reduce size
+      const cleanedBlogData = {
+        ...blogData,
+        posts: blogData.posts.map((post) => ({
+          ...post,
+          // Remove or minimize large content for GitHub sync
+          content: this.cleanContentForSync(post.content),
+          // Remove base64 images to reduce size
+          image: post.image && post.image.startsWith("data:") ? "" : post.image,
+        })),
+      }
+
       // Create the content for blog-data.js
       const blogDataContent = `// Auto-generated blog data
-window.blogData = ${JSON.stringify(blogData, null, 2)};`
+window.blogData = ${JSON.stringify(cleanedBlogData, null, 2)};`
+
+      // Check content size before encoding
+      const contentSize = new Blob([blogDataContent]).size
+      console.log(`Content size: ${contentSize} bytes`)
+
+      if (contentSize > 1000000) {
+        // 1MB limit
+        this.showNotification("Content too large for GitHub sync. Consider reducing post content.", "error")
+        return
+      }
+
+      // Get current file SHA
+      const currentSha = await this.getFileSha("blog-data.js")
 
       // GitHub API call to update the file
       const response = await fetch(`https://api.github.com/repos/${this.config.repo}/contents/blog-data.js`, {
@@ -458,22 +483,44 @@ window.blogData = ${JSON.stringify(blogData, null, 2)};`
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: "Update blog data",
-          content: btoa(blogDataContent),
+          message: `Update blog data - ${new Date().toISOString()}`,
+          content: btoa(unescape(encodeURIComponent(blogDataContent))), // Better encoding for special characters
           branch: this.config.branch,
-          sha: await this.getFileSha("blog-data.js"),
+          ...(currentSha && { sha: currentSha }),
         }),
       })
 
+      const responseData = await response.json()
+
       if (response.ok) {
         this.showNotification("Successfully synced to GitHub!", "success")
+        console.log("GitHub sync successful:", responseData)
       } else {
-        throw new Error("Failed to sync to GitHub")
+        console.error("GitHub API Error:", responseData)
+        throw new Error(`GitHub API Error: ${responseData.message || "Unknown error"}`)
       }
     } catch (error) {
       console.error("GitHub sync error:", error)
-      this.showNotification("Failed to sync to GitHub. Check your configuration.", "error")
+      this.showNotification(`Failed to sync to GitHub: ${error.message}`, "error")
     }
+  }
+
+  // Add this new method to clean content for sync
+  cleanContentForSync(content) {
+    if (!content) return ""
+
+    // Remove excessive whitespace and clean up HTML
+    let cleaned = content
+      .replace(/\s+/g, " ") // Replace multiple spaces with single space
+      .replace(/>\s+</g, "><") // Remove spaces between HTML tags
+      .trim()
+
+    // If content is still too long, truncate it
+    if (cleaned.length > 5000) {
+      cleaned = cleaned.substring(0, 5000) + "..."
+    }
+
+    return cleaned
   }
 
   async getFileSha(filename) {
@@ -487,11 +534,18 @@ window.blogData = ${JSON.stringify(blogData, null, 2)};`
       if (response.ok) {
         const data = await response.json()
         return data.sha
+      } else if (response.status === 404) {
+        console.log("File does not exist, will create new")
+        return null
+      } else {
+        const errorData = await response.json()
+        console.error("Error getting file SHA:", errorData)
+        throw new Error(`Failed to get file SHA: ${errorData.message}`)
       }
     } catch (error) {
-      console.log("File does not exist, will create new")
+      console.log("Error getting file SHA:", error.message)
+      return null
     }
-    return null
   }
 
   loadAnalytics() {
