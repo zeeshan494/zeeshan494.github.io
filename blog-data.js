@@ -2,6 +2,28 @@
 window.blogData = {
   "posts": [
     {
+      "id": "post_1749846610399_rjxyix4v6",
+      "title": "The Anatomy of Email Threats: What SOC Analysts Need to Know",
+      "category": "threat-hunting",
+      "excerpt": "Email threats are one of the most frequent challenges faced by Security Operations Center (SOC) analysts. These threats often crop up multiple times in a single shift, keeping teams on high alert.",
+      "tags": [
+        "Security",
+        "Phishing",
+        "Email Security",
+        "Soc Analyst",
+        "Cyber Threats",
+        "Threat Detection"
+      ],
+      "content": "<p>Email threats are one of the most frequent challenges faced by Security Operations Center (SOC) analysts. These threats often crop up multiple times in a single shift, keeping teams on high alert.</p><p>For attackers, malicious emails are often the starting point for infiltrating a target environment. With these threats on the rise, it’s crucial for SOC analysts and cyber investigators to grasp the techniques attackers use to exploit emails — and, just as importantly, how to detect and respond effectively.</p><p>In this blog, we’ll dive into:</p><ul><li>Why phishing emails are a favorite tool for attackers.</li><li>The most common email-based threats.</li><li>Clever techniques attackers use to evade detection</li><li>Social engineering techniques to trick victims.</li></ul><p>Lets discuss in detail these points</p><h1><strong>Why phishing emails are a favorite tool for attackers.</strong></h1><p>Phishing emails are a top choice for attackers because they’re simple, effective, and exploit human behavior. Here’s why they work so well:</p><p><br></p><ol><li><strong>Easy to Find Email Addresses</strong></li><li>Attackers can quickly gather target emails from job postings, LinkedIn, data leaks, or marketing platforms like ZoomInfo. This makes delivering malicious content to victims easy.</li><li><strong>Simple to Create Malicious Content</strong></li><li>Weaponizing a link or file is straightforward. Attackers can upload malware to cloud platforms, embed it in documents, or send it as compressed files — all through email.</li><li><strong>Users Lack Awareness</strong></li><li>Many people aren’t trained to spot phishing emails, making it easier for attackers to trick them into clicking links or sharing sensitive information.</li></ol><p>These factors make phishing one of the easiest and most effective ways for attackers to gain access.</p><h1>The most common email-based threats.</h1><p>Email threats aren’t limited to phishing scams. Attackers also use email for blackmail, data leaks, exfiltration, and even lateral movement within an organization. Let’s explore four of the most common email threats:</p><h2>1. Spear phishing Attachments</h2><p>Spear phishing attachments involve attackers sending malicious files to target victims. The goal is often to gain access to their systems or steal credentials. After gathering email addresses and preparing the harmful attachment, the attacker simply sends the email with a click.</p><p><br></p><p>But what kind of attachments do attackers typically use? Let’s dive into the most common types of weaponized attachments.</p><p>Attackers use various types of weaponized attachments in spear phishing emails, tailored to their goals and the victim’s environment. Here are the five most common phishing attachment types:</p><ul><li><strong>Malicious Microsoft Office Documents</strong>: Attackers often weaponize Excel, Word, or PowerPoint documents with VBA macros to trick victims into opening them. These are popular because most businesses use Microsoft Office, making the attachments appear legitimate.</li><li><strong>Malicious PDF Files</strong>: Attackers embed malicious code in PDF files, exploiting vulnerabilities in PDF readers. PDFs are appealing because they can contain JavaScript and other elements that make the file look authentic, increasing the chances of the victim interacting with it.</li><li><strong>Compressed Files (.rar, .7z, .zip, etc.)</strong>: Attackers may send compressed files containing executable malware, tricking victims into extracting and running the malicious program.</li><li><strong>ISO Images</strong>: ISO files are becoming more common as they can bypass file filters and evade antivirus detection, making them an effective tool for delivering malware.</li><li><strong>HTML Files</strong>: Attackers may send HTML files that impersonate familiar login pages (like Microsoft, DHL, or bank logins) to steal victims’ credentials.</li></ul><h2>2. Spear phishing Links</h2><p>Spear phishing links are another method attackers use to gain access to systems by tricking victims into clicking on malicious links. These links often lead to fake websites or malware downloads. Let’s look at the two main types of phishing links attackers commonly use:</p><p><br></p><ul><li><strong><em>Phishing Links to Harvest Credentials</em></strong>: Attackers send emails with links to fake websites designed to steal login details. These fake pages may look like legitimate login screens for services like email or banking. The attacker might host the phishing page on their own domain or exploit legitimate cloud platforms like appspot.com.</li><li><strong><em>Phishing Links to Download Malware</em>:&nbsp;</strong>In this case, attackers use links to malicious files hosted on their own servers or trusted cloud services like MEGA, OneDrive, or Dropbox. When victims click the link, they are tricked into downloading and running the malware on their systems.</li></ul><h2>3. Blackmail Email</h2><p>A...",
+      "status": "published",
+      "image": "",
+      "date": "2025-06-13T20:30:10.399Z",
+      "lastModified": "2025-06-13T20:30:10.399Z",
+      "views": 0,
+      "likes": 0,
+      "comments": []
+    },
+    {
       "id": "post_1749846369589_ceydg41bu",
       "title": "Controlling app access on a specific SharePoint site collections",
       "category": "cloud-security",
@@ -24,7 +46,8 @@ window.blogData = {
     }
   ],
   "categories": {
+    "threat-hunting": 1,
     "cloud-security": 1
   },
-  "lastUpdated": "2025-06-13T20:26:12.147Z"
+  "lastUpdated": "2025-06-13T20:30:12.347Z"
 };
