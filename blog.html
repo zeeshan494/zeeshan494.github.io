@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Muhammad Zeeshan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="blog-data.js"></script>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Muhammad Zeeshan</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#education">Education</a></li>
+                <li><a href="index.html#resume">Resume</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cyber Background Effects -->
+    <div class="cyber-background">
+        <div class="binary-rain" id="binary-rain"></div>
+        <div class="network-nodes" id="network-nodes"></div>
+        <div class="data-streams" id="data-streams"></div>
+    </div>
+
+    <main class="blog-main">
+        <div class="container">
+            <header class="blog-header">
+                <h1 class="blog-title">
+                    <i class="fas fa-blog"></i>
+                    Cybersecurity Insights & Thoughts
+                </h1>
+                <p class="blog-subtitle">Sharing knowledge about SOC operations, threat detection, and cybersecurity best practices</p>
+            </header>
+
+            <div class="blog-container">
+                <aside class="blog-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Categories</h3>
+                        <ul class="category-list" id="category-list">
+                            <!-- Categories will be loaded dynamically -->
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Recent Posts</h3>
+                        <ul class="recent-posts" id="recent-posts">
+                            <!-- Recent posts will be loaded dynamically -->
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Tags</h3>
+                        <div class="tag-cloud" id="tag-cloud">
+                            <!-- Tags will be loaded dynamically -->
+                        </div>
+                    </div>
+                </aside>
+
+                <section class="blog-content">
+                    <div class="blog-posts" id="blog-posts">
+                        <!-- Blog posts will be loaded dynamically -->
+                    </div>
+
+                    <div class="pagination" id="pagination">
+                        <button class="pagination-btn" id="prev-page" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <span class="pagination-info" id="pagination-info">Page 1 of 1</span>
+                        <button class="pagination-btn" id="next-page" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Muhammad Zeeshan. All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="blog-dynamic.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Admin - Muhammad Zeeshan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Rich Text Editor -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Muhammad Zeeshan</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="blog-admin.html" class="active">Admin</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> Admin Login</h2>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="admin-password">Password:</label>
+                    <input type="password" id="admin-password" placeholder="Enter admin password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cyber Background Effects -->
+    <div class="cyber-background">
+        <div class="binary-rain" id="binary-rain"></div>
+        <div class="network-nodes" id="network-nodes"></div>
+        <div class="data-streams" id="data-streams"></div>
+    </div>
+
+    <main class="admin-main" id="admin-content" style="display: none;">
+        <div class="container">
+            <header class="admin-header">
+                <h1 class="admin-title">
+                    <i class="fas fa-cogs"></i>
+                    Blog Administration
+                </h1>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="new-post-btn">
+                        <i class="fas fa-plus"></i> New Post
+                    </button>
+                    <button class="btn btn-secondary" id="manage-posts-btn">
+                        <i class="fas fa-list"></i> Manage Posts
+                    </button>
+                    <button class="btn btn-accent" id="github-sync-btn">
+                        <i class="fab fa-github"></i> Sync to GitHub
+                    </button>
+                </div>
+            </header>
+
+            <!-- GitHub Configuration -->
+            <section class="github-config" id="github-config">
+                <div class="config-card">
+                    <h3><i class="fab fa-github"></i> GitHub Configuration</h3>
+                    <div class="config-form">
+                        <div class="form-group">
+                            <label for="github-token">GitHub Personal Access Token:</label>
+                            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx">
+                            <small>Required for pushing changes to your repository</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="github-repo">Repository (username/repo-name):</label>
+                            <input type="text" id="github-repo" placeholder="yourusername/yourrepo" value="zeeshan494/zeeshan494.github.io">
+                        </div>
+                        <div class="form-group">
+                            <label for="github-branch">Branch:</label>
+                            <input type="text" id="github-branch" placeholder="main" value="main">
+                        </div>
+                        <button class="btn btn-primary" id="save-config-btn">
+                            <i class="fas fa-save"></i> Save Configuration
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Post Editor -->
+            <section class="post-editor" id="post-editor" style="display: none;">
+                <div class="editor-card">
+                    <div class="editor-header">
+                        <h3 id="editor-title">Create New Post</h3>
+                        <div class="editor-actions">
+                            <button class="btn btn-secondary" id="save-draft-btn">
+                                <i class="fas fa-save"></i> Save Draft
+                            </button>
+                            <button class="btn btn-primary" id="publish-post-btn">
+                                <i class="fas fa-paper-plane"></i> Publish
+                            </button>
+                            <button class="btn btn-accent" id="cancel-edit-btn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="post-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="post-title">Title:</label>
+                                <input type="text" id="post-title" placeholder="Enter post title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="post-category">Category:</label>
+                                <select id="post-category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="soc">SOC Operations</option>
+                                    <option value="threat-hunting">Threat Hunting</option>
+                                    <option value="cloud-security">Cloud Security</option>
+                                    <option value="ai-security">AI Security</option>
+                                    <option value="incident-response">Incident Response</option>
+                                    <option value="malware-analysis">Malware Analysis</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="post-excerpt">Excerpt:</label>
+                                <textarea id="post-excerpt" placeholder="Brief description of the post" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="post-tags">Tags (comma separated):</label>
+                                <input type="text" id="post-tags" placeholder="SIEM, Wazuh, Security">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post-image">Featured Image:</label>
+                            <div class="image-upload">
+                                <input type="file" id="post-image" accept="image/*">
+                                <div class="image-preview" id="image-preview">
+                                    <i class="fas fa-image"></i>
+                                    <span>Click to upload image</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post-content">Content:</label>
+                            <div id="post-content" style="height: 400px;"></div>
+                        </div>
+
+                        <input type="hidden" id="post-id">
+                        <input type="hidden" id="post-status" value="draft">
+                    </form>
+                </div>
+            </section>
+
+            <!-- Posts Management -->
+            <section class="posts-management" id="posts-management">
+                <div class="management-card">
+                    <div class="management-header">
+                        <h3><i class="fas fa-list"></i> Manage Posts</h3>
+                        <div class="management-filters">
+                            <select id="status-filter">
+                                <option value="all">All Posts</option>
+                                <option value="published">Published</option>
+                                <option value="draft">Drafts</option>
+                            </select>
+                            <input type="text" id="search-posts" placeholder="Search posts...">
+                        </div>
+                    </div>
+
+                    <div class="posts-table">
+                        <table id="posts-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="posts-table-body">
+                                <!-- Posts will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Dashboard -->
+            <section class="analytics-dashboard" id="analytics-dashboard">
+                <div class="analytics-card">
+                    <h3><i class="fas fa-chart-bar"></i> Blog Analytics</h3>
+                    <div class="analytics-grid">
+                        <div class="analytics-item">
+                            <div class="analytics-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="analytics-info">
+                                <span class="analytics-number" id="total-posts">0</span>
+                                <span class="analytics-label">Total Posts</span>
+                            </div>
+                        </div>
+                        <div class="analytics-item">
+                            <div class="analytics-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="analytics-info">
+                                <span class="analytics-number" id="total-views">0</span>
+                                <span class="analytics-label">Total Views</span>
+                            </div>
+                        </div>
+                        <div class="analytics-item">
+                            <div class="analytics-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="analytics-info">
+                                <span class="analytics-number" id="total-likes">0</span>
+                                <span class="analytics-label">Total Likes</span>
+                            </div>
+                        </div>
+                        <div class="analytics-item">
+                            <div class="analytics-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="analytics-info">
+                                <span class="analytics-number" id="total-comments">0</span>
+                                <span class="analytics-label">Total Comments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Muhammad Zeeshan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="blog-admin.js"></script>
+</body>
+</html>

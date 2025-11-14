@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Zeeshan - Cybersecurity Expert</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+    <nav id="navbar">
+    <div class="container">
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#resume">Resume</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <div class="nav-controls">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+    <!-- Cyber Background Effects -->
+    <div class="cyber-background">
+        <div class="binary-rain" id="binary-rain"></div>
+        <div class="network-nodes" id="network-nodes"></div>
+        <div class="data-streams" id="data-streams"></div>
+    </div>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-main" style="padding-top: 6%;">
+                <div class="hero-content">
+                    <h1>Muhammad Zeeshan</h1>
+                    <h2>Lead Security Engineer</h2>
+                    <p>Lead Security Engineer with expertise in SOC operations, threat detection, cloud security, and AI-powered cybersecurity solutions for financial institutions.</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-primary">Contact Me</a>
+                        <a href="#experience" class="btn btn-secondary">View Experience</a>
+                        <a href="#resume" class="btn btn-accent">Download Resume</a>
+                    </div>
+                    <div class="security-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="1000" data-speed="fast">0</span>
+                            <span class="stat-label">Threats Detected</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="24" data-speed="medium">0</span>
+                            <span class="stat-label">24/7 SOC Monitoring</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="99" data-speed="slow">0</span>
+                            <span class="stat-label">% Uptime Achieved</span>
+                        </div>
+                    </div>
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="btn-close"></span>
+                                <span class="btn-minimize"></span>
+                                <span class="btn-maximize"></span>
+                            </div>
+                            <div class="terminal-title">zeeshan@security:~$</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="terminal-line">
+                                <span class="prompt">root@soc:~# </span>
+                                <span class="command" id="typing-text"></span>
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="terminal-output" id="terminal-output"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="profile-container">
+                        <div class="profile-image">
+                            <img src="profile.jpg" alt="Muhammad Zeeshan - Lead Security Engineer" />
+                        </div>
+                    </div>
+                    <div class="soc-dashboard">
+                        <div class="dashboard-header">
+                            <h3>SOC Dashboard</h3>
+                            <div class="status-indicator active"></div>
+                        </div>
+                        <div class="dashboard-content">
+                            <div class="metric">
+                                <span class="metric-label">Active Threats</span>
+                                <span class="metric-value" id="active-threats" data-speed="fast">0</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Blocked IPs</span>
+                                <span class="metric-value" id="blocked-ips" data-speed="medium">0</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">System Health</span>
+                                <span class="metric-value health">98%</span>
+                            </div>
+                        </div>
+                        <div class="threat-feed">
+                            <div class="feed-item">
+                                <span class="threat-type">MALWARE</span>
+                                <span class="threat-status blocked">BLOCKED</span>
+                            </div>
+                            <div class="feed-item">
+                                <span class="threat-type">PHISHING</span>
+                                <span class="threat-status detected">DETECTED</span>
+                            </div>
+                            <div class="feed-item">
+                                <span class="threat-type">INTRUSION</span>
+                                <span class="threat-status blocked">BLOCKED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="matrix-bg" id="matrix-bg"></div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>As a Lead Security Engineer, I orchestrate advanced SOC operations, encompassing the end-to-end design and deployment of internal SOCs leveraging open-source tools like Wazuh, TheHive, and the ELK stack. My expertise extends to proactive threat detection via MITRE ATT&CK-aligned SIEM rules, behavioral analytics, and the proficient utilization of XDR, MXDR, and EDR platforms. </p> <p> I am proficient in securing diverse cloud environments, conducting incident response workshops for AWS and Cloudflare, and managing security tools across AWS, Azure Sentinel, and Cloudflare. Furthermore, I lead AI-powered cybersecurity solutions for enhanced threat detection and anomaly identification, specifically tailored for financial institutions.</p>
+                    <div class="security-timeline">
+                        <div class="timeline-event">
+                            <div class="event-time">2025</div>
+                            <div class="event-desc">Lead Security Engineer - Merik Solutions</div>
+                        </div>
+                        <div class="timeline-event">
+                            <div class="event-time">2024</div>
+                            <div class="event-desc">Performer of the Quarterly - Ebryx</div>
+                        </div>
+                        <div class="timeline-event">
+                            <div class="event-time">2022</div>
+                            <div class="event-desc">Security Engineer - Ebryx</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-info">
+                   <div class="info-item">
+                        <span class="info-title">Location:</span>
+                        <span class="info-value">Islamabad, Pakistan</span>
+                    </div> 
+                    <div class="info-item">
+                        <span class="info-title">Email:</span>
+                        <span class="info-value">muhammadzeeshan494@gmail.com</span>
+                    </div>
+                 <!--  <div class="info-item">
+                        <span class="info-title">Phone:</span>
+                        <span class="info-value">+92 (313) 0177933</span>
+                    </div> --> 
+                    <div class="info-item">
+                        <span class="info-title">Languages:</span>
+                        <span class="info-value">Urdu (Native), English (Bilingual)</span>
+                    </div>
+
+                    
+                    
+                </div>
+  
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="experience">
+        <div class="container">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Feb 2025 - Present</div>
+                    <div class="timeline-content">
+                        <h3>Lead Security Engineer</h3>
+                        <h4>Merik Solutions, Islamabad</h4>
+                        <p>Currently leading the internal SOC at Merik Solutions, overseeing technical operations, team development, and strategic direction. SOC initiatives span from open-source tool deployment to AI-powered security use cases for the finance sector.</p>
+                        <ul>
+                            <li>Designed and deployed a full-featured internal SOC using open-source tools including Wazuh, TheHive, and ELK stack</li>
+                            <li>Developed comprehensive training roadmap for SOC analysts with hands-on labs and continuous assessments</li>
+                            <li>Conducted technical lectures and workshops on Python-based automation for log parsing and SOAR integrations</li>
+                            <li>Led incident response tabletop sessions simulating real-world breaches</li>
+                            <li>Building analyst rosters and shift rotations to ensure 24/7 SOC coverage</li>
+                            <li>Creating, tuning, and maintaining SIEM detection rules with MITRE ATT&CK-aligned use cases</li>
+                            <li>Mentoring team members and participating in hiring new SOC analysts</li>
+                            <li>Leading development of AI-powered cybersecurity use cases for financial institutions</li>
+                            <li>Conducting client meetings to assess security needs and propose tailored SOC solutions</li>
+                            <li>Improving SOC operations by aligning practices with SANS, NIST, and MITRE frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">June 2022 - Feb 2025</div>
+                    <div class="timeline-content">
+                        <h3>Security Engineer</h3>
+                        <h4>Ebryx, Lahore</h4>
+                        <p>Working as part of SOC Team, actively monitoring, containing, and responding to security threats by collecting TTPs and following effective models like SANS and NIST.</p>
+                        <ul>
+                            <li>Continuously monitored Network/Host in 24/7 SOC environment using SIEM/EDR tools</li>
+                            <li>Identification and investigation of Logs/Events and escalation of security incidents</li>
+                            <li>Threat hunting, use-case creation, rate limiting, and tuning of SIEM and IDS rules</li>
+                            <li>Designed, developed, and maintained Incident Response playbooks</li>
+                            <li>Conducted AWS Security and Cloudflare incident response workshops</li>
+                            <li>Developed threat detection rules in ELK and Azure Sentinel with Logic Apps automation</li>
+                            <li>Performed forensic analysis of artifacts from compromised machines/networks</li>
+                            <li>Used MITRE ATT&CK to analyze APT techniques and mapped detections over Azure Sentinel Rules</li>
+                            <li>Conducted deep analysis of phishing emails and malware using static and dynamic analysis</li>
+                            <li>Developed multiple automation scripts for Slack and Azure Sentinel</li>
+                            <li>Set up VS Code Server on EC2 with Nginx for secure remote development</li>
+                            <li>Created automated vulnerability scanner for final year project</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Professional Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Detection Engineering</h3>
+                    <div class="skill-items">
+                        <span class="skill-item">Gap Assessments</span>
+                        <span class="skill-item">Threat Hunting</span>
+                        <span class="skill-item">Threat Research</span>
+                        <span class="skill-item">Security Hardening</span>
+                        <span class="skill-item">Purple Teaming</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Cloud Security & Assessments</h3>
+                    <div class="skill-items">
+                        <span class="skill-item">AWS</span>
+                        <span class="skill-item">Azure Sentinel</span>
+                        <span class="skill-item">Microsoft Defender</span>
+                        <span class="skill-item">Cloudflare</span>
+                        <span class="skill-item">EC2</span>
+                        <span class="skill-item">RDS</span>
+                        <span class="skill-item">S3</span>
+                        <span class="skill-item">IAM</span>
+                        <span class="skill-item">VPC</span>
+                        <span class="skill-item">SG</span>
+                        <span class="skill-item">CF</span>
+                        <span class="skill-item">ES</span>
+                        <span class="skill-item">Lambda</span>
+                        <span class="skill-item">LB</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Intrusion Analysis/SIEM Tools</h3>
+                    <div class="skill-items">
+                        <span class="skill-item">ELK Stack</span>
+                        <span class="skill-item">Crowdstrike Falcon</span>
+                        <span class="skill-item">Azure Sentinel</span>
+                        <span class="skill-item">Cloudflare</span>
+                        <span class="skill-item">Wazuh</span>
+                        <span class="skill-item">Microsoft Defender</span>
+                        <span class="skill-item">Qradar</span>
+                        <span class="skill-item">Lacework</span>
+                        <span class="skill-item">VIPRE</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>TCP/IP Protocols & AWS Security</h3>
+                    <div class="skill-items">
+                        <span class="skill-item">TCP/IP Protocols</span>
+                        <span class="skill-item">Traffic Flow</span>
+                        <span class="skill-item">Guard Duty</span>
+                        <span class="skill-item">Security Hub</span>
+                        <span class="skill-item">AWS Security Hub</span>
+                        <span class="skill-item">Amazon CloudTrail</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Security Tools</h3>
+                    <div class="skill-items">
+                        <span class="skill-item">Maltego</span>
+                        <span class="skill-item">NMAP</span>
+                        <span class="skill-item">Wireshark</span>
+                        <span class="skill-item">Metasploit</span>
+                        <span class="skill-item">Zscaler</span>
+                        <span class="skill-item">Azure DevOps</span>
+                        <span class="skill-item">The Hive</span>
+                        <span class="skill-item">Jira</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Languages and Technologies</h3>
+                    <div class="skill-items">
+                        <span class="skill-item">Kibana Query Language</span>
+                        <span class="skill-item">Kusto Query Language</span>
+                        <span class="skill-item">Elastic Search Query</span>
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">C++</span>
+                        <span class="skill-item">C</span>
+                        <span class="skill-item">Computer Networks</span>
+                        <span class="skill-item">Data Structures</span>
+                        <span class="skill-item">Object Oriented Programming</span>
+                        <span class="skill-item">Information Security</span>
+                        <span class="skill-item">Operating System</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="education">
+        <div class="container">
+            <h2 class="section-title">Education & Certifications</h2>
+            <div class="education-container">
+                <div class="education-section">
+                    <h3>Education</h3>
+                    <div class="education-item">
+                        <h4>BS-Computer Science</h4>
+                        <p class="institution">Namal University Mianwali</p>
+                        <p class="year">2018 - 2022</p>
+                        <p class="details">Final Year Project: Automated Network Penetrator</p>
+                    </div>
+                </div>
+                <div class="education-section">
+                    <h3>Certifications</h3>
+                    <div class="education-item">
+                        <h4>Certified AppSec Practitioner (CAP)</h4>
+                        <p class="institution">The SecOps Group</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Certified Network Security Practitioner (CNSP)</h4>
+                        <p class="institution">The SecOps Group</p>
+                    </div>
+                </div>
+                <div class="education-section">
+                    <h3>Professional Trainings</h3>
+                    <div class="education-item">
+                        <h4>AWS Solution Architect</h4>
+                        <p class="institution">CloudGuru</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Network Plus</h4>
+                        <p class="institution">CBT Nuggets</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Linux Fundamentals</h4>
+                        <p class="institution">Linux</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Rate Limiting/Detection Rules and Playbook Creation</h4>
+                        <p class="institution">Cloudflare</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Website Hacking Penetration Testing & Bug Bounty Hunting</h4>
+                        <p class="institution">Hacking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume" class="resume">
+        <div class="container">
+            <h2 class="section-title">Resume</h2>
+            <div class="resume-container">
+                <div class="resume-preview">
+                    <div class="resume-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="resume-info">
+                        <h3>Muhammad Zeeshan - Resume</h3>
+                        <p>Lead Security Engineer | Cybersecurity Expert</p>
+                        <p class="file-size">PDF • Updated January 2025</p>
+                    </div>
+                </div>
+                <div class="resume-actions">
+                    <a href="Zeeshan_Resume.pdf" download="Muhammad_Zeeshan_Resume.pdf" class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        Download Resume
+                    </a>
+                    <a href="Zeeshan_Resume.pdf" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i>
+                        View Online
+                    </a>
+                    <a href="https://linkedin.com/in/your-profile" target="_blank" class="btn btn-accent">
+                        <i class="fab fa-linkedin"></i>
+                        LinkedIn Profile
+                    </a>
+                </div>
+                <div class="resume-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>4+ Years Experience</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>Multiple Certifications</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SOC Leadership</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="extracurricular" class="extracurricular">
+        <div class="container">
+            <h2 class="section-title">Extracurricular Experience</h2>
+            <div class="extracurricular-container">
+                <div class="extracurricular-item">
+                    <div class="extracurricular-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="extracurricular-content">
+                        <h3>Leadership Roles at Namal University</h3>
+                        <div class="role-item">
+                            <h4>President - Cyber Security Awareness Society</h4>
+                            <p>Served 6 months leading cybersecurity awareness initiatives</p>
+                        </div>
+                        <div class="role-item">
+                            <h4>Head Education Wing - Namal Environmental Society</h4>
+                            <p>Served 6 months organizing educational programs and workshops</p>
+                        </div>
+                        <div class="role-item">
+                            <h4>Co-Head Education Wing - Namal Society of Social Impact</h4>
+                            <p>Served 6 months coordinating social impact educational initiatives</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="extracurricular-item">
+                    <div class="extracurricular-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="extracurricular-content">
+                        <h3>Youth Leadership Camp</h3>
+                        <p class="institution">Islamabad</p>
+                        <p>Spent 10 days at a Youth Leadership Camp, participating in workshops on leadership, team building, and personal development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="achievements">
+        <div class="container">
+            <h2 class="section-title">Awards & Achievements</h2>
+            <div class="achievements-container">
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h3>Performer of the Quarterly</h3>
+                        <p>Ebryx Pvt. Ltd.</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h3>President</h3>
+                        <p>Cyber Security Awareness Society, Namal University</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h3>Head & Co-Head of Education Wings</h3>
+                        <p>Multiple student bodies, Namal University</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h3>Youth Leadership Camp</h3>
+                        <p>Leadership training program, Islamabad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Location</h3>
+                            <p>Islamabad, Pakistan</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Email</h3>
+                            <p><a href="mailto:muhammadzeeshan494@gmail.com">muhammadzeeshan494@gmail.com</a></p>
+                        </div>
+                    </div>
+                 <!--     <div class="contact-item">
+                      <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    <div class="contact-text">
+                            <h3>Phone</h3>
+                            <p><a href="tel:+923130177933">+92 (313) 0177933</a></p>
+                        </div>
+                    </div> -->
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Languages</h3>
+                            <p>Urdu (Native), English (Bilingual)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            <span class="btn-text">SEND MESSAGE</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Sending...
+                            </span>
+                        </button>
+                        <input type="hidden" name="to_email" value="muhammadzeeshan494@gmail.com">
+                    </form>
+                    <div id="form-status" class="form-status"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Muhammad Zeeshan. All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
