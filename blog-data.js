@@ -19,7 +19,7 @@ window.blogData = {
       "image": "",
       "date": "2025-06-13T20:30:10.399Z",
       "lastModified": "2025-06-13T20:30:10.399Z",
-      "views": 0,
+      "views": 1,
       "likes": 0,
       "comments": []
     },
@@ -49,5 +49,5 @@ window.blogData = {
     "threat-hunting": 1,
     "cloud-security": 1
   },
-  "lastUpdated": "2025-06-13T20:30:12.347Z"
+  "lastUpdated": "2026-01-14T12:48:14.596Z"
 };
